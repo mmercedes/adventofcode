@@ -1,1 +1,1 @@
-My solutions to [Advent of Code](adventofcode.com)
+My solutions to [Advent of Code](https://adventofcode.com)
