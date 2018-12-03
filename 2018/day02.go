@@ -1,55 +1,20 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"sort"
 	"strings"
 )
 
-func day2(argv []string) int {
+func day2(args [][]rune) int {
 
-	if len(argv) == 0 {
-		fmt.Fprintln(os.Stderr, "Missing required filename param")
-		return 1
-	}
-
-	parsedArgs := inventoryParser(argv[0])
-
-	if len(parsedArgs) == 0 {
-		fmt.Fprintf(os.Stderr, "Failed to parse input file %s\n", argv[0])
-		return 1
-	}
-
-	result := inventoryChecksum(parsedArgs)
+	result := inventoryChecksum(args)
 	fmt.Printf("Part1 Result : %d\n", result)
 
-	result2 := inventoryPart2(parsedArgs)
+	result2 := inventoryPart2(args)
 	fmt.Printf("Part2 Result : %s\n", result2)
 	return 0
-}
-
-func inventoryParser(filename string) [][]rune {
-	file, err := os.Open(filename)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return [][]rune{}
-	}
-	defer file.Close()
-
-	args := [][]rune{}
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		args = append(args, []rune(scanner.Text()))
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return [][]rune{}
-	}
-
-	return args
 }
 
 func inventoryChecksum(args [][]rune) int {

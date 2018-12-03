@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 )
@@ -10,7 +11,7 @@ const (
 	USAGE = "aoc $day_number $input_file"
 )
 
-var dayFuncs = map[string]func([]string) int{
+var dayFuncs = map[string]func([][]rune) int{
 	"1": day1,
 	"2": day2,
 	//        "3": day3,
@@ -37,25 +38,56 @@ var dayFuncs = map[string]func([]string) int{
 	//        "24": day24,
 }
 
-func wrapper(f func([]string) int, argv []string) int {
-	return f(argv)
+func wrapper(f func([][]rune) int, args [][]rune) int {
+	return f(args)
 }
 
 func main() {
 	var (
-		day string
+		day      string
+		filename string
 	)
 
 	argv := os.Args
 	day = argv[1]
+	filename = argv[2]
 
-	if day == "" || dayFuncs[day] == nil {
+	if day == "" || dayFuncs[day] == nil || filename == "" {
 		fmt.Println(USAGE)
 		os.Exit(1)
 	}
 
+	args := fileParse(filename)
+
 	fmt.Printf("Starting run of main func for day %s\n", day)
 
-	returnCode := wrapper(dayFuncs[day], argv[2:])
+	returnCode := wrapper(dayFuncs[day], args)
 	os.Exit(returnCode)
+}
+
+func fileParse(filename string) [][]rune {
+	file, err := os.Open(filename)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return [][]rune{}
+	}
+	defer file.Close()
+
+	args := [][]rune{}
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		args = append(args, []rune(scanner.Text()))
+	}
+
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return [][]rune{}
+	}
+
+	if len(args) == 0 {
+		fmt.Fprintf(os.Stderr, "Failed to parse input file %s\n", filename)
+		os.Exit(1)
+	}
+
+	return args
 }

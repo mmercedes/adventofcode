@@ -1,25 +1,14 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"strconv"
 )
 
-func day1(argv []string) int {
+func day1(args [][]rune) int {
 
-	if len(argv) == 0 {
-		fmt.Fprintln(os.Stderr, "Missing required filename param")
-		return 1
-	}
-
-	parsedArgs := chronalParser(argv[0])
-
-	if len(parsedArgs) == 0 {
-		fmt.Fprintf(os.Stderr, "Failed to parse input file %s\n", argv[0])
-		return 1
-	}
+	parsedArgs := chronalParser(args)
 
 	result := chronalCalibration(parsedArgs)
 
@@ -31,32 +20,18 @@ func day1(argv []string) int {
 	return 0
 }
 
-func chronalParser(filename string) []int {
-	file, err := os.Open(filename)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return []int{}
-	}
-	defer file.Close()
-
-	args := []int{}
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		arg, err := strconv.Atoi(scanner.Text())
+func chronalParser(args [][]rune) []int {
+	parsed := []int{}
+	for _, arg := range args {
+		i, err := strconv.Atoi(string(arg))
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "Failed to parse arg in file")
-			fmt.Fprintln(os.Stderr, err)
-			return []int{}
+			fmt.Fprintf(os.Stderr, "Failed to convert string arg to int")
+			os.Exit(1)
 		}
-		args = append(args, arg)
+		parsed = append(parsed, i)
 	}
 
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return []int{}
-	}
-
-	return args
+	return parsed
 }
 
 func chronalCalibration(changes []int) int {
