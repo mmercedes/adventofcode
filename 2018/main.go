@@ -7,12 +7,12 @@ import (
 
 const (
 	// USAGE how to run this
-	USAGE = "aoc $day_number $args"
+	USAGE = "aoc $day_number $input_file"
 )
 
 var dayFuncs = map[string]func([]string) int{
 	"1": day1,
-	//        "2": day2,
+	"2": day2,
 	//        "3": day3,
 	//        "4": day4,
 	//        "5": day5,
