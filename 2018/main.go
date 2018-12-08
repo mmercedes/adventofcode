@@ -16,7 +16,7 @@ var dayFuncs = map[string]func([][]rune) int{
 	"2": day2,
 	"3": day3,
 	"4": day4,
-	//        "5": day5,
+	"5": day5,
 	//        "6": day6,
 	//        "7": day7,
 	//        "8": day8,
