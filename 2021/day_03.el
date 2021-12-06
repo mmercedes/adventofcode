@@ -5,8 +5,8 @@
 (defun mapcar* (f &rest xs)
   "MAPCAR for multiple sequences"
   (if (not (memq nil xs))
-    (cons (apply f (mapcar 'car xs))
-      (apply 'mapcar* f (mapcar 'cdr xs)))))
+      (cons (apply f (mapcar 'car xs))
+            (apply 'mapcar* f (mapcar 'cdr xs)))))
 
 (defun read_file_to_alist (file)
   "read file into string"
